@@ -4,7 +4,7 @@ describe('Custom Async Matchers (Integration)', function() {
 
   beforeEach(function() {
     env = new jasmineUnderTest.Env();
-    env.configure({random: false});
+    env.configure({ random: false });
   });
 
   afterEach(function() {
@@ -17,7 +17,11 @@ describe('Custom Async Matchers (Integration)', function() {
     env.it('spec using custom async matcher', function() {
       env.addAsyncMatchers({
         toBeReal: function() {
-          return { compare: function() { return Promise.resolve({ pass: true }); } };
+          return {
+            compare: function() {
+              return Promise.resolve({ pass: true });
+            }
+          };
         }
       });
 
@@ -39,8 +43,12 @@ describe('Custom Async Matchers (Integration)', function() {
       env.addAsyncMatchers({
         toBeReal: function() {
           return {
-            compare: function() { return Promise.resolve({ pass: true }); },
-            negativeCompare: function() { return Promise.resolve({ pass: true }); }
+            compare: function() {
+              return Promise.resolve({ pass: true });
+            },
+            negativeCompare: function() {
+              return Promise.resolve({ pass: true });
+            }
           };
         }
       });
@@ -74,26 +82,31 @@ describe('Custom Async Matchers (Integration)', function() {
     });
 
     var specExpectations = function(result) {
-      expect(result.failedExpectations[0].message).toEqual("Expected 'a' to be real.");
+      expect(result.failedExpectations[0].message).toEqual(
+        "Expected 'a' to be real."
+      );
     };
 
     env.addReporter({ specDone: specExpectations });
     env.execute(null, done);
   });
 
-  it("passes the jasmine utility to the matcher factory", function (done) {
+  it('passes the jasmine utility to the matcher factory', function(done) {
     jasmine.getEnv().requirePromises();
 
-    var matcherFactory = function (util) {
+    var matcherFactory = function(util) {
         return {
-          compare: function () {
-            return Promise.resolve({pass: true});
+          compare: function() {
+            return Promise.resolve({ pass: true });
           }
         };
       },
-      matcherFactorySpy = jasmine.createSpy("matcherFactorySpy", matcherFactory);
+      matcherFactorySpy = jasmine.createSpy(
+        'matcherFactorySpy',
+        matcherFactory
+      );
 
-    env.it("spec with expectation", function () {
+    env.it('spec with expectation', function() {
       env.addAsyncMatchers({
         toBeReal: matcherFactorySpy
       });
@@ -101,7 +114,7 @@ describe('Custom Async Matchers (Integration)', function() {
       return env.expectAsync(true).toBeReal();
     });
 
-    var specExpectations = function () {
+    var specExpectations = function() {
       expect(matcherFactorySpy).toHaveBeenCalledWith(
         jasmine.any(jasmineUnderTest.MatchersUtil)
       );
@@ -114,28 +127,32 @@ describe('Custom Async Matchers (Integration)', function() {
   it("provides custom equality testers to the matcher factory via matchersUtil", function(done) {
     jasmine.getEnv().requirePromises();
 
-    var matcherFactory = function (matchersUtil) {
+    var matcherFactory = function(matchersUtil) {
         return {
-          compare: function (actual, expected) {
-            return Promise.resolve({pass: matchersUtil.equals(actual[0], expected)});
+          compare: function(actual, expected) {
+            return Promise.resolve({
+              pass: matchersUtil.equals(actual[0], expected)
+            });
           }
         };
       },
-      customEqualityFn = jasmine.createSpy("customEqualityFn").and.callFake(function (a, b) {
-        return a.toString() === b;
-      });
+      customEqualityFn = jasmine
+        .createSpy('customEqualityFn')
+        .and.callFake(function(a, b) {
+          return a.toString() === b;
+        });
 
-    env.it("spec with expectation", function() {
+    env.it('spec with expectation', function() {
       env.addCustomEqualityTester(customEqualityFn);
       env.addAsyncMatchers({
         toBeArrayWithFirstElement: matcherFactory
       });
 
-      return env.expectAsync([1, 2]).toBeArrayWithFirstElement("1");
+      return env.expectAsync([1, 2]).toBeArrayWithFirstElement('1');
     });
 
     var specExpectations = function(result) {
-      expect(customEqualityFn).toHaveBeenCalledWith(1, "1");
+      expect(customEqualityFn).toHaveBeenCalledWith(1, '1');
       expect(result.failedExpectations).toEqual([]);
     };
 
