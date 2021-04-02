@@ -499,9 +499,14 @@ describe('matchersUtil', function() {
       ).toBe(true);
     });
 
-    it("passes when a custom equality matcher returns true", function() {
-      var tester = function(a, b) { return true; },
-        matchersUtil = new jasmineUnderTest.MatchersUtil({customTesters: [tester], pp: function() {}});
+    it('passes when a custom equality matcher returns true', function() {
+      var tester = function(a, b) {
+          return true;
+        },
+        matchersUtil = new jasmineUnderTest.MatchersUtil({
+          customTesters: [tester],
+          pp: function() {}
+        });
 
       expect(matchersUtil.equals(1, 2)).toBe(true);
     });
@@ -511,8 +516,10 @@ describe('matchersUtil', function() {
       expect(matchersUtil.equals({}, {})).toBe(true);
     });
 
-    describe("when a custom equality matcher returns 'undefined'", function () {
-      var tester = function(a, b) { return jasmine.undefined; };
+    describe("when a custom equality matcher returns 'undefined'", function() {
+      var tester = function(a, b) {
+        return jasmine.undefined;
+      };
 
       it('passes for two empty Objects', function() {
         var matchersUtil = new jasmineUnderTest.MatchersUtil({
@@ -523,24 +530,37 @@ describe('matchersUtil', function() {
       });
     });
 
-    it("fails for equivalents when a custom equality matcher returns false", function() {
-      var tester = function(a, b) { return false; },
-        matchersUtil = new jasmineUnderTest.MatchersUtil({customTesters: [tester], pp: function() {}});
+    it('fails for equivalents when a custom equality matcher returns false', function() {
+      var tester = function(a, b) {
+          return false;
+        },
+        matchersUtil = new jasmineUnderTest.MatchersUtil({
+          customTesters: [tester],
+          pp: function() {}
+        });
 
       expect(matchersUtil.equals(1, 1)).toBe(false);
     });
 
-
-    it("passes for an asymmetric equality tester that returns true when a custom equality tester return false", function() {
-      var asymmetricTester = { asymmetricMatch: function(other) { return true; } },
-        symmetricTester = function(a, b) { return false; },
-        matchersUtil = new jasmineUnderTest.MatchersUtil({customTesters: [symmetricTester()], pp: function() {}});
+    it('passes for an asymmetric equality tester that returns true when a custom equality tester return false', function() {
+      var asymmetricTester = {
+          asymmetricMatch: function(other) {
+            return true;
+          }
+        },
+        symmetricTester = function(a, b) {
+          return false;
+        },
+        matchersUtil = new jasmineUnderTest.MatchersUtil({
+          customTesters: [symmetricTester()],
+          pp: function() {}
+        });
 
       expect(matchersUtil.equals(asymmetricTester, true)).toBe(true);
       expect(matchersUtil.equals(true, asymmetricTester)).toBe(true);
     });
 
-    it("passes when an Any is compared to an Any that checks for the same type", function() {
+    it('passes when an Any is compared to an Any that checks for the same type', function() {
       var any1 = new jasmineUnderTest.Any(Function),
         any2 = new jasmineUnderTest.Any(Function),
         matchersUtil = new jasmineUnderTest.MatchersUtil();
@@ -726,12 +746,19 @@ describe('matchersUtil', function() {
       expect(matchersUtil.equals(mapA, mapB)).toBe(false);
     });
 
-    describe("when running in an environment with array polyfills", function() {
-      var findIndexDescriptor = Object.getOwnPropertyDescriptor(Array.prototype, 'findIndex');
+    describe('when running in an environment with array polyfills', function() {
+      var findIndexDescriptor = Object.getOwnPropertyDescriptor(
+        Array.prototype,
+        'findIndex'
+      );
 
       beforeEach(function() {
         if (!findIndexDescriptor) {
-          jasmine.getEnv().pending('Environment does not have a property descriptor for Array.prototype.findIndex');
+          jasmine
+            .getEnv()
+            .pending(
+              'Environment does not have a property descriptor for Array.prototype.findIndex'
+            );
         }
 
         Object.defineProperty(Array.prototype, 'findIndex', {
@@ -890,9 +917,14 @@ describe('matchersUtil', function() {
       ).toBe(true);
     });
 
-    it("uses custom equality testers if actual is an Array", function() {
-      var customTester = function(a, b) {return true;},
-        matchersUtil = new jasmineUnderTest.MatchersUtil({customTesters: [customTester], pp: function() {}});
+    it('uses custom equality testers if actual is an Array', function() {
+      var customTester = function(a, b) {
+          return true;
+        },
+        matchersUtil = new jasmineUnderTest.MatchersUtil({
+          customTesters: [customTester],
+          pp: function() {}
+        });
 
       expect(matchersUtil.contains([1, 2], 3)).toBe(true);
     });

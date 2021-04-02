@@ -80,7 +80,13 @@ getJasmineRequireObj().MatchersUtil = function(j$) {
     return message + '.';
   };
 
-  MatchersUtil.prototype.asymmetricDiff_ = function(a, b, aStack, bStack, diffBuilder) {
+  MatchersUtil.prototype.asymmetricDiff_ = function(
+    a,
+    b,
+    aStack,
+    bStack,
+    diffBuilder
+  ) {
     if (j$.isFunction_(b.valuesForDiff_)) {
       var values = b.valuesForDiff_(a, this.pp);
       this.eq_(values.other, values.self, aStack, bStack, diffBuilder);
@@ -89,10 +95,16 @@ getJasmineRequireObj().MatchersUtil = function(j$) {
     }
   };
 
-  MatchersUtil.prototype.asymmetricMatch_ = function(a, b, aStack, bStack, diffBuilder) {
+  MatchersUtil.prototype.asymmetricMatch_ = function(
+    a,
+    b,
+    aStack,
+    bStack,
+    diffBuilder
+  ) {
     var asymmetricA = j$.isAsymmetricEqualityTester_(a),
-        asymmetricB = j$.isAsymmetricEqualityTester_(b),
-        result;
+      asymmetricB = j$.isAsymmetricEqualityTester_(b),
+      result;
 
     if (asymmetricA === asymmetricB) {
       return undefined;
@@ -134,9 +146,17 @@ getJasmineRequireObj().MatchersUtil = function(j$) {
   // Equality function lovingly adapted from isEqual in
   //   [Underscore](http://underscorejs.org)
   MatchersUtil.prototype.eq_ = function(a, b, aStack, bStack, diffBuilder) {
-    var result = true, self = this, i;
+    var result = true,
+      self = this,
+      i;
 
-    var asymmetricResult = this.asymmetricMatch_(a, b, aStack, bStack, diffBuilder);
+    var asymmetricResult = this.asymmetricMatch_(
+      a,
+      b,
+      aStack,
+      bStack,
+      diffBuilder
+    );
     if (!j$.util.isUndefined(asymmetricResult)) {
       return asymmetricResult;
     }
@@ -291,7 +311,14 @@ getJasmineRequireObj().MatchersUtil = function(j$) {
             );
             result = false;
           } else {
-            result = self.eq_(i < aLength ? a[i] : void 0, i < bLength ? b[i] : void 0, aStack, bStack, diffBuilder) && result;
+            result =
+              self.eq_(
+                i < aLength ? a[i] : void 0,
+                i < bLength ? b[i] : void 0,
+                aStack,
+                bStack,
+                diffBuilder
+              ) && result;
           }
         });
       }
@@ -331,13 +358,22 @@ getJasmineRequireObj().MatchersUtil = function(j$) {
           // Only use the cmpKey when one of the keys is asymmetric and the corresponding key matches,
           // otherwise explicitly look up the mapKey in the other Map since we want keys with unique
           // obj identity (that are otherwise equal) to not match.
-          if (j$.isAsymmetricEqualityTester_(mapKey) || j$.isAsymmetricEqualityTester_(cmpKey) &&
-              this.eq_(mapKey, cmpKey, aStack, bStack, j$.NullDiffBuilder())) {
+          if (
+            j$.isAsymmetricEqualityTester_(mapKey) ||
+            (j$.isAsymmetricEqualityTester_(cmpKey) &&
+              this.eq_(mapKey, cmpKey, aStack, bStack, j$.NullDiffBuilder()))
+          ) {
             mapValueB = b.get(cmpKey);
           } else {
             mapValueB = b.get(mapKey);
           }
-          result = this.eq_(mapValueA, mapValueB, aStack, bStack, j$.NullDiffBuilder());
+          result = this.eq_(
+            mapValueA,
+            mapValueB,
+            aStack,
+            bStack,
+            j$.NullDiffBuilder()
+          );
         }
       }
 
@@ -381,7 +417,13 @@ getJasmineRequireObj().MatchersUtil = function(j$) {
             otherValue = otherValues[l];
             prevStackSize = baseStack.length;
             // compare by value equality
-            found = this.eq_(baseValue, otherValue, baseStack, otherStack, j$.NullDiffBuilder());
+            found = this.eq_(
+              baseValue,
+              otherValue,
+              baseStack,
+              otherStack,
+              j$.NullDiffBuilder()
+            );
             if (!found && prevStackSize !== baseStack.length) {
               baseStack.splice(prevStackSize);
               otherStack.splice(prevStackSize);
@@ -444,7 +486,7 @@ getJasmineRequireObj().MatchersUtil = function(j$) {
       }
 
       diffBuilder.withPath(key, function() {
-        if(!self.eq_(a[key], b[key], aStack, bStack, diffBuilder)) {
+        if (!self.eq_(a[key], b[key], aStack, bStack, diffBuilder)) {
           result = false;
         }
       });

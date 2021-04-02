@@ -108,9 +108,8 @@ describe('Custom Matchers (Integration)', function() {
     env.execute(null, done);
   });
 
-  it("displays an appropriate failure message if a custom equality matcher fails", function(done) {
-    env.it("spec using custom equality matcher", function() {
-
+  it('displays an appropriate failure message if a custom equality matcher fails', function(done) {
+    env.it('spec using custom equality matcher', function() {
       var customEqualityFn = function(a, b) {
         // "foo" is not equal to anything
         if (a === 'foo' || b === 'foo') {
@@ -241,8 +240,8 @@ describe('Custom Matchers (Integration)', function() {
     env.execute(null, done);
   });
 
-  it("provides custom equality testers to the matcher factory via matchersUtil", function (done) {
-    var matcherFactory = function (matchersUtil) {
+  it('provides custom equality testers to the matcher factory via matchersUtil', function(done) {
+    var matcherFactory = function(matchersUtil) {
         return {
           compare: function(actual, expected) {
             return { pass: matchersUtil.equals(actual[0], expected) };

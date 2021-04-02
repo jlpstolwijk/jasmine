@@ -124,7 +124,7 @@ describe('Custom Async Matchers (Integration)', function() {
     env.execute(null, done);
   });
 
-  it("provides custom equality testers to the matcher factory via matchersUtil", function(done) {
+  it('provides custom equality testers to the matcher factory via matchersUtil', function(done) {
     jasmine.getEnv().requirePromises();
 
     var matcherFactory = function(matchersUtil) {
